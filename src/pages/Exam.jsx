@@ -374,6 +374,18 @@ const Exam = () => {
 
                     {/* Multiple choice options */}
                     <div className="bg-gray-800 text-white">
+                    {currentQuestion.photo ? (
+                       <div className="border border-[#FFFFFF] px-2">
+                       <h2 className="  font-semibold text-white leading-relaxed">
+                               {currentQuestion.title}
+                             </h2>
+                        </div>
+                    ):(
+                      <></>
+                    )
+                      
+                    }
+                   
                       <div className="grid grid-cols-2 border border-[#FFFFFF]">
                         {currentQuestion.options?.map((option, index) => {
                           // Determine the background color based on answer state
