@@ -494,9 +494,7 @@ const handleResultClick = () => {
                 </div>
               )}
             </div>
-          </div>
-          {/* Progress bar with question segments - ALWAYS SHOW THIS */}
-     
+          </div>     
           {/* Progress bar with question segments - ALWAYS SHOW THIS */}
 <div className="flex h-6 mt-4 relative">
   {Array.from({ length: examQuestions.length }).map((_, index) => {
