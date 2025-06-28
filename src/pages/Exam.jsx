@@ -405,7 +405,7 @@ const handleResultClick = () => {
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 mt-2">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 mt-16">
             <div className="flex flex-wrap  gap-4 mb-7 items-center justify-center md:justify-start">
               <div className="flex flex-col items-center gap-2 col-span-1">
                 <button className="bg-[#F0F2BD] text-[#008318] text-3xl font-bold py-2 px-8 rounded">
@@ -496,7 +496,7 @@ const handleResultClick = () => {
             </div>
           </div>     
           {/* Progress bar with question segments - ALWAYS SHOW THIS */}
-<div className="flex h-6 mt-4 relative">
+<div className="flex h-6 mt-10 relative">
   {Array.from({ length: examQuestions.length }).map((_, index) => {
     const isAnswered = userAnswers[index] !== null;
     const isCorrect = isAnswered && userAnswers[index] === examQuestions[index]?.correctAnswer;
