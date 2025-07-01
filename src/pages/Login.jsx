@@ -18,7 +18,7 @@ function Login() {
     
     try {
       const res = await axios.post(
-        "https://traffic-solve-cors-backend.vercel.app/api/users/login",
+        "https://avtoskola-drift.vercel.app/api/users/login",
         { email, password }
       );
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import {
@@ -27,7 +27,7 @@ const Home = () => {
       setLoadingVehicles(true);
       try {
         const response = await axios.get(
-          "https://traffic-solve-cors-backend.vercel.app/api/vehicles"
+          "https://avtoskola-drift.vercel.app/api/vehicles"
         );
         setVehicles(response.data);
 
@@ -52,7 +52,7 @@ const Home = () => {
       setLoadingTopics(true);
       try {
         const response = await axios.get(
-          `https://traffic-solve-cors-backend.vercel.app/api/topics/vehicle/${selectedVehicle}`
+          `https://avtoskola-drift.vercel.app/api/topics/vehicle/${selectedVehicle}`
         );
         setTopics(response.data);
         console.log(response.data, "topics for vehicle");
@@ -114,35 +114,43 @@ const Home = () => {
     <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
       {loadingVehicles ? (
         <div className="flex justify-center items-center h-screen">
-          <p className="text-[#BE3144]">Loading vehicles...</p>
+          <p className="text-[#ffcc00]">Loading vehicles...</p>
         </div>
       ) : (
         <div>
           <div className="flex flex-col justify-between items-center gap-2 mb-4">
             <Button
-              className="bg-[#BE3144] text-black px-12 text-sm md:text-base py-5 hover:bg-[#F72C5B]"
+              className="bg-[#FEFF00] text-black px-12 text-sm md:text-base py-5 hover:bg-[#fcd444]"
               onClick={handleStartQuiz}
             >
-              <span className="text-sm lg:text-base font-semibold">გამოცდის დაწყება</span>
+              <span className="text-sm lg:text-base font-semibold">
+                გამოცდის დაწყება
+              </span>
             </Button>
 
-            <Select 
-              onValueChange={(value) => setSelectedVehicle(value)} 
+            <Select
+              onValueChange={(value) => setSelectedVehicle(value)}
               value={selectedVehicle}
             >
-              <SelectTrigger className="w-full bg-[#BE3144] text-sm md:text-base text-black px-4 py-6 rounded-md flex items-center">
+              <SelectTrigger className="w-full bg-[#FEFF00] text-sm md:text-base text-black px-4 py-6 rounded-md flex items-center">
                 <SelectValue placeholder="Select a vehicle" />
               </SelectTrigger>
-              <SelectContent className="w-full py-4 bg-[#BE3144] text-sm md:text-base text-white shadow-lg rounded-md">
+              <SelectContent className="w-full py-4 bg-[#FEFF00] text-sm md:text-base text-black shadow-lg rounded-md">
                 {vehicles?.map((vehicle) => (
                   <SelectItem
                     key={vehicle._id}
-                    className="px-4 py-2 w-full text-sm md:text-base hover:bg-green-400 cursor-pointer font-semibold"
+                    className="px-4 py-2 w-full text-sm md:text-base hover:bg-[#ffee57] cursor-pointer font-semibold"
                     value={vehicle._id}
                   >
                     <div className="flex place-items-center gap-2">
-                      <img src={vehicle.photo} alt="vehicle" className="w-16 h-6 object-cover" />
-                      <span className="block font-bold text-sm md:text-base">{vehicle.name}</span>
+                      <img
+                        src={vehicle.photo}
+                        alt="vehicle"
+                        className="w-16 h-6 object-cover"
+                      />
+                      <span className="block font-bold text-sm md:text-base">
+                        {vehicle.name}
+                      </span>
                     </div>
                   </SelectItem>
                 ))}
@@ -152,28 +160,43 @@ const Home = () => {
 
           {loadingTopics ? (
             <div className="flex justify-center items-center h-40">
-              <p className="text-[#BE3144]">Loading topics...</p>
+              <p className="text-[#FEFF00]">Loading topics...</p>
             </div>
           ) : (
             <div className="bg-white shadow-md rounded-lg p-4">
               {topics.length === 0 ? (
-                <div className="text-center text-gray-500">No topics available for this vehicle.</div>
+                <div className="text-center text-gray-500">
+                  No topics available for this vehicle.
+                </div>
               ) : (
                 <>
                   <div className="flex justify-center mb-4 items-center gap-2">
                     <Checkbox
                       checked={allSelected}
                       onCheckedChange={toggleAllTopics}
-                      className={`peer ${allSelected ? "bg-[#BE3144] text-white" : "bg-gray-200"}`}
+                      className={`peer ${
+                        allSelected
+                          ? "bg-[#FEFF00] text-black"
+                          : "bg-gray-200 text-black"
+                      }`}
                     />
-                    <span className="ml-2 text-[14px] font-bold leading-[21px] font-sans">მონიშნე/წაშალე ყველა</span>
+                    <span className="ml-2 text-[14px] font-bold leading-[21px] font-sans">
+                      მონიშნე/წაშალე ყველა
+                    </span>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-[rgb(33,37,41)]">
                     {topics.map((topic, index) => (
-                      <div key={topic._id} className="flex items-center gap-2 mx-0 md:mx-14 text-sm md:text-sm lg:text-base font-semibold leading-[21px]">
+                      <div
+                        key={topic._id}
+                        className="flex items-center gap-2 mx-0 md:mx-14 text-sm md:text-sm lg:text-base font-semibold leading-[21px]"
+                      >
                         <Checkbox
-                          className={`peer ${selectedTopics.has(topic._id) ? "bg-[#BE3144] text-white" : "bg-gray-200"}`}
+                          className={`peer ${
+                            selectedTopics.has(topic._id)
+                              ? "bg-[#FEFF00] text-black"
+                              : "bg-gray-200"
+                          }`}
                           checked={selectedTopics.has(topic._id)}
                           onCheckedChange={() => toggleTopic(topic._id)}
                         />

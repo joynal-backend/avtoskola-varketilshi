@@ -1,12 +1,10 @@
 import App from "@/App";
 import Exam from "@/pages/Exam";
 import Result from "@/pages/Result";
-import Home from "@/pages/Home";
-import { createBrowserRouter, useNavigate } from "react-router-dom";
+import { createBrowserRouter, useNavigate, Navigate } from "react-router-dom";
 import Dashboard from "@/pages/Dashboard";
 import Login from "@/pages/Login";
 import PrivateRoute from "./PrivetRoute";
-import NotFound from "@/pages/NotFound";
 import { useEffect } from "react";
 import Demo from "@/pages/Admin/Demo";
 
@@ -21,20 +19,23 @@ const ErrorRedirect = () => {
   return null; // Render nothing while redirecting
 };
 
-
 const routes = createBrowserRouter([
   {
     path: "/",
-    element: <App/>,
-    errorElement:<ErrorRedirect/>,
+    element: <Navigate to="/exam1" replace />,
   },
   {
     path: "/exam",
-    element: <Exam/>,
+    element: <Exam />,
+  },
+  {
+    path: "/exam1",
+    element: <App />,
+    errorElement: <ErrorRedirect />,
   },
   {
     path: "/result",
-    element: <Result/>,
+    element: <Result />,
   },
   {
     path: "/dashboard",
@@ -46,11 +47,11 @@ const routes = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <Login/>,
+    element: <Login />,
   },
   {
     path: "/demo",
-    element: <Demo/>,
+    element: <Demo />,
   },
 ]);
 

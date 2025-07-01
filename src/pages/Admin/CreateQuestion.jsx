@@ -32,7 +32,7 @@ const CreateQuestion = () => {
     const fetchVehicles = async () => {
       try {
         const response = await axios.get(
-          "https://traffic-solve-cors-backend.vercel.app/api/vehicles"
+          "https://avtoskola-drift.vercel.app/api/vehicles"
         );
         setVehicles(response.data);
       } catch (error) {
@@ -48,7 +48,7 @@ const CreateQuestion = () => {
     try {
       const topicsPromises = selectedVehicles.map((vehicleId) =>
         axios.get(
-          `https://traffic-solve-cors-backend.vercel.app/api/topics/vehicle/${vehicleId}`
+          `https://avtoskola-drift.vercel.app/api/topics/vehicle/${vehicleId}`
         )
       );
 
@@ -161,7 +161,7 @@ const CreateQuestion = () => {
       }
 
       await axios.post(
-        "https://traffic-solve-cors-backend.vercel.app/api/questions",
+        "https://avtoskola-drift.vercel.app/api/questions",
         questionData,
         {
           headers: {

@@ -36,7 +36,7 @@ const Admin = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        "https://traffic-solve-cors-backend.vercel.app/api/users",
+        "https://avtoskola-drift.vercel.app/api/users",
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setUsers(response?.data?.data);
@@ -54,10 +54,9 @@ const Admin = () => {
   const handleDeleteAdmin = async (id) => {
     setDeletingAdmin(id);
     try {
-      await axios.delete(
-        `https://traffic-solve-cors-backend.vercel.app/api/users/${id}`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await axios.delete(`https://avtoskola-drift.vercel.app/api/users/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       toast.success("Admin deleted successfully");
       fetchUsers();
     } catch (error) {
@@ -73,7 +72,7 @@ const Admin = () => {
     setCreatingAdmin(true);
     try {
       await axios.post(
-        "https://traffic-solve-cors-backend.vercel.app/api/users/register",
+        "https://avtoskola-drift.vercel.app/api/users/register",
         { username, email, password },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -106,7 +105,7 @@ const Admin = () => {
       if (editPassword) updateData.password = editPassword;
 
       await axios.put(
-        `https://traffic-solve-cors-backend.vercel.app/api/users/${editingUserId}`,
+        `https://avtoskola-drift.vercel.app/api/users/${editingUserId}`,
         updateData,
         { headers: { Authorization: `Bearer ${token}` } }
       );

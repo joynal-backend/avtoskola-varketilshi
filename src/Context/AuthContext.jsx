@@ -15,7 +15,7 @@ const AuthProvider = ({ children }) => {
           // const isValid = await verifyToken(token);
           // For now, we'll assume token is valid if it exists
           setIsAuthenticated(true);
-          
+
           const userData = localStorage.getItem("user");
           if (userData) {
             setUser(JSON.parse(userData));
@@ -51,12 +51,12 @@ const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider 
-      value={{ 
-        isAuthenticated, 
+    <AuthContext.Provider
+      value={{
+        isAuthenticated,
         user,
         loading,
-        login, 
+        login,
         logout,
         setIsAuthenticated,
       }}

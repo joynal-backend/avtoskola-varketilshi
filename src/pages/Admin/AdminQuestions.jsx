@@ -55,7 +55,7 @@ const AdminQuestions = ({ questionTabActive }) => {
   const fetchQuestions = async () => {
     try {
       const response = await axios.get(
-        "https://traffic-solve-cors-backend.vercel.app/api/questions"
+        "https://avtoskola-drift.vercel.app/api/questions"
       );
       const reversedQuestions = response?.data.reverse();
       setQuestions(reversedQuestions);
@@ -68,7 +68,7 @@ const AdminQuestions = ({ questionTabActive }) => {
   const fetchTopics = async () => {
     try {
       const response = await axios.get(
-        "https://traffic-solve-cors-backend.vercel.app/api/topics"
+        "https://avtoskola-drift.vercel.app/api/topics"
       );
       setTopics(response?.data);
     } catch (error) {
@@ -91,7 +91,7 @@ const AdminQuestions = ({ questionTabActive }) => {
     setIsDeleting(id);
     try {
       await axios.delete(
-        `https://traffic-solve-cors-backend.vercel.app/api/questions/${id}`,
+        `https://avtoskola-drift.vercel.app/api/questions/${id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -176,7 +176,7 @@ const AdminQuestions = ({ questionTabActive }) => {
         imageUrl = cloudinaryResponse.data.secure_url;
       }
       await axios.put(
-        `https://traffic-solve-cors-backend.vercel.app/api/questions/${currentQuestion._id}`,
+        `https://avtoskola-drift.vercel.app/api/questions/${currentQuestion._id}`,
         { ...editedQuestion, photo: imageUrl },
         {
           headers: { Authorization: `Bearer ${token}` },
