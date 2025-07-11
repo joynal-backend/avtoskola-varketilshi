@@ -288,9 +288,6 @@ const Exam = () => {
   return (
     <div
       className="relative min-h-screen w-full text-white bg-cover bg-center flex flex-col bg-black"
-      // style={{
-      //   backgroundImage: "url('https://wallpapers.com/images/hd/logo-background-zgqtb9n3ieqmc3fx.jpg')",
-      // }}
     >
       {/* Add custom CSS for animations */}
       <style jsx>{`
@@ -352,10 +349,6 @@ const Exam = () => {
                             alt="Question"
                             className="w-full h-auto  object-cover md:rounded-tr-[0px] md:rounded-tl-[0px]  rounded-tr-[30px] rounded-tl-[30px] "
                           />
-                          {/* Text overlay on image when image is present */}
-                          {/* <div className=" bg-black bg-opacity-90 text-white p-4">
-                            <p className="text-base font-semibold leading-relaxed mb-3 text-center">{currentQuestion.title}</p>
-                          </div> */}
                         </>
                       </div>
                     ) : (
@@ -365,7 +358,7 @@ const Exam = () => {
                          flex flex-col items-center justify-center"
                       >
                         <div className="text-center border-1 border-white ">
-                          <h2 className="  font-semibold text-white leading-relaxed">
+                          <h2 className="  font-semibold text-white leading-relaxed text-center">
                             {currentQuestion.title}
                           </h2>
                         </div>
@@ -375,16 +368,14 @@ const Exam = () => {
                     {/* Multiple choice options */}
                     <div className="bg-gray-800 text-white">
                     {currentQuestion.photo ? (
-                       <div className="border border-[#FFFFFF] px-2">
+                       <div className="border border-[#FFFFFF] px-2 py-2">
                        <h2 className="  font-semibold text-white leading-relaxed">
                                {currentQuestion.title}
                              </h2>
                         </div>
                     ):(
                       <></>
-                    )
-                      
-                    }
+                    )}
                    
                       <div className="grid grid-cols-2 border border-[#FFFFFF]">
                         {currentQuestion.options?.map((option, index) => {
@@ -519,225 +510,249 @@ const Exam = () => {
               )}
             </div>
           </div>
-          {/* Progress bar with question segments - ALWAYS SHOW THIS */}
-          <div className="flex h-6 mt-10 relative">
-            {Array.from({ length: examQuestions.length }).map((_, index) => {
-              const isAnswered = userAnswers[index] !== null;
-              const isCorrect =
-                isAnswered &&
-                userAnswers[index] === examQuestions[index]?.correctAnswer;
-              const isCurrent = index === currentQuestionIndex;
+         {/* Progress bar with question segments - ALWAYS SHOW THIS */}
+<div className="flex h-6 mt-10 relative">
+  {Array.from({ length: examQuestions.length }).map((_, index) => {
+    const isAnswered = userAnswers[index] !== null;
+    const isCorrect =
+      isAnswered &&
+      userAnswers[index] === examQuestions[index]?.correctAnswer;
+    const isCurrent = index === currentQuestionIndex;
 
-              let bgColor = "bg-gray-200";
-              if (isAnswered) {
-                bgColor = isCorrect ? "bg-green-500" : "bg-red-500";
-              } else if (isCurrent && !isExamFinished) {
-                bgColor = "bg-yellow-300";
+    let bgColor = "bg-gray-200";
+    if (isAnswered) {
+      bgColor = isCorrect ? "bg-green-500" : "bg-red-500";
+    } else if (isCurrent && !isExamFinished) {
+      bgColor = "bg-yellow-300";
+    }
+
+    return (
+      <div
+        key={index}
+        className={`flex-1 border-2 border-[#1a0909] relative ${bgColor} ${
+          isAnswered ? "hover:bg-opacity-80" : ""
+        }`}
+        onMouseEnter={() =>
+          isAnswered && setHoveredQuestionIndex(index)
+        }
+        onMouseLeave={() => setHoveredQuestionIndex(null)}
+        onClick={() =>
+          isAnswered &&
+          setHoveredQuestionIndex(
+            index === hoveredQuestionIndex ? null : index
+          )
+        }
+      >
+        {/* Question preview popup - only shown for answered questions */}
+        {hoveredQuestionIndex === index && isAnswered && (
+          <div
+            className="fixed md:absolute bottom-full mb-2 z-50 w-[90vw] md:w-[500px] bg-white shadow-2xl overflow-hidden border-8 border-white"
+            style={{
+              maxWidth: "calc(100vw - 2rem)",
+              // Calculate position with boundary checks
+              left: `clamp(1rem, ${
+                // For first 3 questions, center over first segment group
+                index < 3
+                  ? `${(3 / examQuestions.length) * 100 / 2 * 100}%`
+                  : // For last 3 questions, center over last segment group
+                  index >= examQuestions.length - 3
+                  ? `${100 - ((3 / examQuestions.length) * 100 / 2 * 100)}%`
+                  : // For middle questions, center over current segment
+                    `${(index + 0.5) / examQuestions.length * 100}%`
+              }, calc(100vw - 1rem - ${window.innerWidth < 768 ? '90vw' : '500px'}))`,
+              // Mobile positioning
+              ...(window.innerWidth < 768 && {
+                bottom: "auto",
+                top: "50%",
+                transform: "translate(-50%, -50%)",
+                marginBottom: 0,
+                left: "50%",
+                right: "auto"
+              }),
+            }}
+            ref={(el) => {
+              // Additional boundary check for desktop
+              if (el && window.innerWidth >= 768) {
+                const rect = el.getBoundingClientRect();
+                if (rect.left < 0) {
+                  el.style.left = '1rem';
+                }
+                if (rect.right > window.innerWidth) {
+                  el.style.left = `calc(100vw - 1rem - ${rect.width}px)`;
+                }
               }
+            }}
+          >
+            {/* Close button for mobile */}
+            {window.innerWidth < 768 && (
+              <button
+                className="absolute top-2 right-2 bg-black text-white rounded-full w-8 h-8 flex items-center justify-center z-50"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setHoveredQuestionIndex(null);
+                }}
+              >
+                ×
+              </button>
+            )}
 
-              return (
-                <div
-                  key={index}
-                  className={`flex-1 border-2 border-[#1a0909] relative ${bgColor} ${
-                    isAnswered ? "hover:bg-opacity-80" : ""
-                  }`}
-                  onMouseEnter={() =>
-                    isAnswered && setHoveredQuestionIndex(index)
-                  }
-                  onMouseLeave={() => setHoveredQuestionIndex(null)}
-                  onClick={() =>
-                    isAnswered &&
-                    setHoveredQuestionIndex(
-                      index === hoveredQuestionIndex ? null : index
-                    )
-                  }
-                >
-                  {/* Question preview popup - only shown for answered questions */}
-                  {hoveredQuestionIndex === index && isAnswered && (
-                    <div
-                      className="fixed md:absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 z-50 w-[90vw] md:w-80 bg-white shadow-2xl overflow-hidden border-8 border-white"
-                      style={{
-                        maxWidth: "calc(100vw - 2rem)",
-                        left: "50%",
-                        right: "auto",
-                        // Position differently on mobile to ensure it's fully visible
-                        ...(window.innerWidth < 768 && {
-                          bottom: "auto",
-                          top: "50%",
-                          transform: "translate(-50%, -50%)",
-                          marginBottom: 0,
-                        }),
-                      }}
+            {/* Rest of the modal content remains the same */}
+            <div className="relative h-48">
+              {examQuestions[index]?.photo ? (
+                <img
+                  src={examQuestions[index]?.photo}
+                  alt="Question preview"
+                  className="w-full h-full object-contain bg-gray-900"
+                />
+              ) : (
+                <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center p-4">
+                  <h3 className="text-white text-center text-sm font-medium leading-relaxed">
+                    {examQuestions[index]?.title}
+                  </h3>
+                </div>
+              )}
+              <div className="absolute top-2 left-2 bg-black bg-opacity-75 text-white px-2 py-1 rounded text-sm font-bold">
+                {index + 1}/{examQuestions.length}
+              </div>
+              <div className="absolute top-2 right-2">
+                {isCorrect ? (
+                  <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center border-2 border-white">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5 text-white"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
                     >
-                      {/* Close button for mobile */}
-                      {window.innerWidth < 768 && (
-                        <button
-                          className="absolute top-2 right-2 bg-black text-white rounded-full w-8 h-8 flex items-center justify-center z-50"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setHoveredQuestionIndex(null);
-                          }}
-                        >
-                          ×
-                        </button>
+                      <path
+                        fillRule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                ) : (
+                  <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center border-2 border-white">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5 text-white"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {examQuestions[index]?.photo && (
+              <div className="p-3 border-b border-gray-300 bg-[#374151] text-center">
+                <p className="text-sm text-white font-medium">
+                  {examQuestions[index]?.title}
+                </p>
+              </div>
+            )}
+
+            <div className="bg-gray-50 p-3 grid grid-cols-2 gap-2">
+              {examQuestions[index]?.options?.map((option, optIndex) => {
+                const isUserAnswer = option === userAnswers[index];
+                const isRightAnswer = option === examQuestions[index]?.correctAnswer;
+                
+                return (
+                  <div 
+                    key={optIndex}
+                    className={`mb-2 p-2 rounded border ${
+                      isRightAnswer 
+                        ? "bg-green-100 border-green-300"
+                        : isUserAnswer && !isRightAnswer
+                          ? "bg-red-100 border-red-300"
+                          : "bg-gray-100 border-gray-300"
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      {isRightAnswer ? (
+                        <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center border-2 border-green-700">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-3 w-3 text-white"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </div>
+                      ) : isUserAnswer && !isRightAnswer ? (
+                        <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center border-2 border-red-700">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-3 w-3 text-white"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </div>
+                      ) : (
+                        <div className="w-6 h-6 bg-gray-300 rounded-full flex items-center justify-center border-2 border-gray-500">
+                          <span className="text-xs font-bold text-gray-600">
+                            {optIndex + 1}
+                          </span>
+                        </div>
                       )}
-
-                      {/* Main image section */}
-                      <div className="relative h-48">
-                        {examQuestions[index]?.photo ? (
-                          <img
-                            src={examQuestions[index]?.photo}
-                            alt="Question preview"
-                            className="w-full h-full object-contain bg-gray-900"
-                          />
-                        ) : (
-                          <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center p-4">
-                            <h3 className="text-white text-center text-sm font-medium leading-relaxed">
-                              {examQuestions[index]?.title}
-                            </h3>
-                          </div>
-                        )}
-                        {/* Question number overlay */}
-                        <div className="absolute top-2 left-2 bg-black bg-opacity-75 text-white px-2 py-1 rounded text-sm font-bold">
-                          {index + 1}/{examQuestions.length}
-                        </div>
-                        {/* Status indicator */}
-                        <div className="absolute top-2 right-2">
-                          {isCorrect ? (
-                            <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center border-2 border-white">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-5 w-5 text-white"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                              >
-                                <path
-                                  fillRule="evenodd"
-                                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                  clipRule="evenodd"
-                                />
-                              </svg>
-                            </div>
-                          ) : (
-                            <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center border-2 border-white">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-5 w-5 text-white"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                              >
-                                <path
-                                  fillRule="evenodd"
-                                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                  clipRule="evenodd"
-                                />
-                              </svg>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Question title below image - only show if image exists */}
-                      {examQuestions[index]?.photo && (
-                        <div className="p-3 border-b border-gray-300 bg-[#374151] text-center ">
-                          <p className="text-sm text-white font-medium">
-                            {examQuestions[index]?.title}
-                          </p>
-                        </div>
-                      )}
-
-                      {/* Answer options section */}
-                      <div className="bg-gray-50">
-                        {isCorrect ? (
-                          // Single correct answer display
-                          <div className="bg-green-100 p-3 rounded border border-green-300">
-                            <div className="flex items-center gap-2">
-                              <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center border-2 border-green-700">
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  className="h-3 w-3 text-white"
-                                  viewBox="0 0 20 20"
-                                  fill="currentColor"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                    clipRule="evenodd"
-                                  />
-                                </svg>
-                              </div>
-                              <p className="text-sm text-green-800 font-medium">
-                                {examQuestions[index]?.correctAnswer}
-                              </p>
-                            </div>
-                          </div>
-                        ) : (
-                          // Grid display for wrong answer (showing both correct and user's answer)
-                          <div className="grid grid-cols-2 gap-1">
-                            {/* User's wrong answer */}
-                            <div className="bg-[#052029]/90 p-3 rounded border border-red-300">
-                              <div className="flex items-center justify-center gap-2">
-                                <div className="w-6 h-6  flex items-center justify-center "></div>
-                                <p className="text-xs font-semibold text-white ">
-                                  {userAnswers[index]}
-                                </p>
-                              </div>
-                            </div>
-
-                            {/* Correct answer */}
-                            <div className="bg-[#00831D] p-3 rounded border border-green-300">
-                              <div className="flex items-center gap-2 ">
-                                <div className="w-6 h-6  rounded-full flex items-center justify-center ">
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-6 w-6 text-white"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                  >
-                                    <path
-                                      fillRule="evenodd"
-                                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                      clipRule="evenodd"
-                                    />
-                                  </svg>
-                                </div>
-                                <p className="text-xs font-semibold text-white ">
-                                  {examQuestions[index]?.correctAnswer}
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Result summary at bottom */}
-                      <div className="bg-gray-100 p-3 border-t border-gray-300">
-                        <div className="flex justify-between items-center">
-                          <div className="flex items-center gap-2">
-                            {isCorrect ? (
-                              <>
-                                <div className="w-4 h-4 bg-green-500 rounded-full border-2 border-green-700"></div>
-                                <span className="text-xs font-semibold text-green-700">
-                                  Correct Answer
-                                </span>
-                              </>
-                            ) : (
-                              <>
-                                <div className="w-4 h-4 bg-red-500 rounded-full border-2 border-red-700"></div>
-                                <span className="text-xs font-semibold text-red-700">
-                                  Wrong Answer
-                                </span>
-                              </>
-                            )}
-                          </div>
-                        </div>
-                      </div>
+                      <p className={`text-sm ${
+                        isRightAnswer 
+                          ? "text-green-800 font-medium"
+                          : isUserAnswer && !isRightAnswer
+                            ? "text-red-800 font-medium"
+                            : "text-gray-700"
+                      }`}>
+                        {option}
+                      </p>
                     </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="bg-gray-100 p-3 border-t border-gray-300">
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                  {isCorrect ? (
+                    <>
+                      <div className="w-4 h-4 bg-green-500 rounded-full border-2 border-green-700"></div>
+                      <span className="text-xs font-semibold text-green-700">
+                        Correct Answer
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <div className="w-4 h-4 bg-red-500 rounded-full border-2 border-red-700"></div>
+                      <span className="text-xs font-semibold text-red-700">
+                        Wrong Answer
+                      </span>
+                    </>
                   )}
                 </div>
-              );
-            })}
+              </div>
+            </div>
           </div>
+        )}
+      </div>
+    );
+  })}
+</div>
           {/* Show completion message and restart buttons when exam is finished */}
           {isExamFinished && (
             <div className="mt-4 text-center">
