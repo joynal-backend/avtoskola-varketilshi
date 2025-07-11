@@ -553,187 +553,210 @@ const Exam = () => {
                   }
                 >
                   {/* Question preview popup - only shown for answered questions */}
-                  {hoveredQuestionIndex === index && isAnswered && (
-                    <div
-                      className="fixed md:absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 z-50 w-[90vw] md:w-80 bg-white shadow-2xl overflow-hidden border-8 border-white"
-                      style={{
-                        maxWidth: "calc(100vw - 2rem)",
-                        left: "50%",
-                        right: "auto",
-                        // Position differently on mobile to ensure it's fully visible
-                        ...(window.innerWidth < 768 && {
-                          bottom: "auto",
-                          top: "50%",
-                          transform: "translate(-50%, -50%)",
-                          marginBottom: 0,
-                        }),
-                      }}
-                    >
-                      {/* Close button for mobile */}
-                      {window.innerWidth < 768 && (
-                        <button
-                          className="absolute top-2 right-2 bg-black text-white rounded-full w-8 h-8 flex items-center justify-center z-50"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setHoveredQuestionIndex(null);
-                          }}
-                        >
-                          ×
-                        </button>
-                      )}
+                {/* Replace the existing modal section in your progress bar with this updated version */}
 
-                      {/* Main image section */}
-                      <div className="relative h-48">
-                        {examQuestions[index]?.photo ? (
-                          <img
-                            src={examQuestions[index]?.photo}
-                            alt="Question preview"
-                            className="w-full h-full object-contain bg-gray-900"
-                          />
-                        ) : (
-                          <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center p-4">
-                            <h3 className="text-white text-center text-sm font-medium leading-relaxed">
-                              {examQuestions[index]?.title}
-                            </h3>
-                          </div>
-                        )}
-                        {/* Question number overlay */}
-                        <div className="absolute top-2 left-2 bg-black bg-opacity-75 text-white px-2 py-1 rounded text-sm font-bold">
-                          {index + 1}/{examQuestions.length}
-                        </div>
-                        {/* Status indicator */}
-                        <div className="absolute top-2 right-2">
-                          {isCorrect ? (
-                            <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center border-2 border-white">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-5 w-5 text-white"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                              >
-                                <path
-                                  fillRule="evenodd"
-                                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                  clipRule="evenodd"
-                                />
-                              </svg>
-                            </div>
-                          ) : (
-                            <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center border-2 border-white">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-5 w-5 text-white"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                              >
-                                <path
-                                  fillRule="evenodd"
-                                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                  clipRule="evenodd"
-                                />
-                              </svg>
-                            </div>
-                          )}
-                        </div>
-                      </div>
+{/* Question preview popup - only shown for answered questions */}
+{hoveredQuestionIndex === index && isAnswered && (
+  <div
+    className="fixed md:absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 z-50 w-[90vw] md:w-80 bg-white shadow-2xl overflow-hidden border-8 border-white"
+    style={{
+      maxWidth: "calc(100vw - 2rem)",
+      left: "50%",
+      right: "auto",
+      // Position differently on mobile to ensure it's fully visible
+      ...(window.innerWidth < 768 && {
+        bottom: "auto",
+        top: "50%",
+        transform: "translate(-50%, -50%)",
+        marginBottom: 0,
+      }),
+    }}
+  >
+    {/* Close button for mobile */}
+    {window.innerWidth < 768 && (
+      <button
+        className="absolute top-2 right-2 bg-black text-white rounded-full w-8 h-8 flex items-center justify-center z-50"
+        onClick={(e) => {
+          e.stopPropagation();
+          setHoveredQuestionIndex(null);
+        }}
+      >
+        ×
+      </button>
+    )}
 
-                      {/* Question title below image - only show if image exists */}
-                      {examQuestions[index]?.photo && (
-                        <div className="p-3 border-b border-gray-300 bg-[#374151] text-center ">
-                          <p className="text-sm text-white font-medium">
-                            {examQuestions[index]?.title}
-                          </p>
-                        </div>
-                      )}
+    {/* Main image section */}
+    <div className="relative h-48">
+      {examQuestions[index]?.photo ? (
+        <img
+          src={examQuestions[index]?.photo}
+          alt="Question preview"
+          className="w-full h-full object-contain bg-gray-900"
+        />
+      ) : (
+        <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center p-4">
+          <h3 className="text-white text-center text-sm font-medium leading-relaxed">
+            {examQuestions[index]?.title}
+          </h3>
+        </div>
+      )}
+      {/* Question number overlay */}
+      <div className="absolute top-2 left-2 bg-black bg-opacity-75 text-white px-2 py-1 rounded text-sm font-bold">
+        {index + 1}/{examQuestions.length}
+      </div>
+      {/* Status indicator */}
+      <div className="absolute top-2 right-2">
+        {isCorrect ? (
+          <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center border-2 border-white">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 text-white"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </div>
+        ) : (
+          <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center border-2 border-white">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 text-white"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </div>
+        )}
+      </div>
+    </div>
 
-                      {/* Answer options section */}
-                      <div className="bg-gray-50">
-                        {isCorrect ? (
-                          // Single correct answer display
-                          <div className="bg-green-100 p-3 rounded border border-green-300">
-                            <div className="flex items-center gap-2">
-                              <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center border-2 border-green-700">
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  className="h-3 w-3 text-white"
-                                  viewBox="0 0 20 20"
-                                  fill="currentColor"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                    clipRule="evenodd"
-                                  />
-                                </svg>
-                              </div>
-                              <p className="text-sm text-green-800 font-medium">
-                                {examQuestions[index]?.correctAnswer}
-                              </p>
-                            </div>
-                          </div>
-                        ) : (
-                          // Grid display for wrong answer (showing both correct and user's answer)
-                          <div className="grid grid-cols-2 gap-1">
-                            {/* User's wrong answer */}
-                            <div className="bg-[#052029]/90 p-3 rounded border border-red-300">
-                              <div className="flex items-center justify-center gap-2">
-                                <div className="w-6 h-6  flex items-center justify-center "></div>
-                                <p className="text-xs font-semibold text-white ">
-                                  {userAnswers[index]}
-                                </p>
-                              </div>
-                            </div>
+    {/* Question title below image - only show if image exists */}
+    {examQuestions[index]?.photo && (
+      <div className="p-3 border-b border-gray-300 bg-[#374151] text-center">
+        <p className="text-sm text-white font-medium">
+          {examQuestions[index]?.title}
+        </p>
+      </div>
+    )}
 
-                            {/* Correct answer */}
-                            <div className="bg-[#00831D] p-3 rounded border border-green-300">
-                              <div className="flex items-center gap-2 ">
-                                <div className="w-6 h-6  rounded-full flex items-center justify-center ">
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-6 w-6 text-white"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                  >
-                                    <path
-                                      fillRule="evenodd"
-                                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                      clipRule="evenodd"
-                                    />
-                                  </svg>
-                                </div>
-                                <p className="text-xs font-semibold text-white ">
-                                  {examQuestions[index]?.correctAnswer}
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        )}
-                      </div>
+    {/* Answer options section - Show all options with icons */}
+    <div className="bg-gray-50 p-2 w-auto overflow-y-scroll">
+      <div className="space-y-2 grid grid-cols-2 gap-2 content-center">
+        {examQuestions[index]?.options?.map((option, optionIndex) => {
+          const isCorrectOption = option === examQuestions[index]?.correctAnswer;
+          const isUserAnswer = option === userAnswers[index];
+          const isWrongUserAnswer = isUserAnswer && !isCorrectOption;
+          
+          // Determine styling based on option type
+          let optionClass = "bg-gray-100 border-gray-300";
+          let textColor = "text-gray-700";
+          let iconElement = null;
+          
+          if (isCorrectOption) {
+            optionClass = "bg-green-100 border-green-300";
+            textColor = "text-green-800";
+            iconElement = (
+              <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center border-2 border-green-700">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-3 w-3 text-white"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
+            );
+          } else if (isWrongUserAnswer) {
+            optionClass = "bg-red-100 border-red-300";
+            textColor = "text-red-800";
+            iconElement = (
+              <div className="w-5 h-5 bg-red-500 rounded-full flex items-center justify-center border-2 border-red-700">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-3 w-3 text-white"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
+            );
+          } else {
+            // Regular option (not selected, not correct)
+            iconElement = (
+              <div className="w-5 h-5 bg-gray-300 rounded-full flex items-center justify-center border-2 border-gray-400">
+                <span className="text-xs text-gray-600 font-bold">
+                  {optionIndex + 1}
+                </span>
+              </div>
+            );
+          }
 
-                      {/* Result summary at bottom */}
-                      <div className="bg-gray-100 p-3 border-t border-gray-300">
-                        <div className="flex justify-between items-center">
-                          <div className="flex items-center gap-2">
-                            {isCorrect ? (
-                              <>
-                                <div className="w-4 h-4 bg-green-500 rounded-full border-2 border-green-700"></div>
-                                <span className="text-xs font-semibold text-green-700">
-                                  Correct Answer
-                                </span>
-                              </>
-                            ) : (
-                              <>
-                                <div className="w-4 h-4 bg-red-500 rounded-full border-2 border-red-700"></div>
-                                <span className="text-xs font-semibold text-red-700">
-                                  Wrong Answer
-                                </span>
-                              </>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
+          return (
+            <div
+              key={optionIndex}
+              className={`p-2 rounded border ${optionClass} transition-all duration-200`}
+            >
+              <div className="flex items-center gap-2">
+                {iconElement}
+                <p className={`text-xs font-medium ${textColor} flex-1`}>
+                  {option}
+                </p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+
+    {/* Result summary at bottom */}
+    <div className="bg-gray-100 p-3 border-t border-gray-300">
+      <div className="flex justify-between items-center">
+        <div className="flex items-center gap-2">
+          {isCorrect ? (
+            <>
+              <div className="w-4 h-4 bg-green-500 rounded-full border-2 border-green-700"></div>
+              <span className="text-xs font-semibold text-green-700">
+                Correct Answer
+              </span>
+            </>
+          ) : (
+            <>
+              <div className="w-4 h-4 bg-red-500 rounded-full border-2 border-red-700"></div>
+              <span className="text-xs font-semibold text-red-700">
+                Wrong Answer
+              </span>
+            </>
+          )}
+        </div>
+        {!isCorrect && (
+          <div className="text-xs text-gray-600">
+            Your answer: {userAnswers[index]}
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+)}
                 </div>
               );
             })}
