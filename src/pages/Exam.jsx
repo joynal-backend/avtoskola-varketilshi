@@ -333,7 +333,7 @@ const Exam = () => {
               >
                 {isExamFinished ? (
                   // Show exam completion message
-                  <div className="h-[200px] flex items-center justify-center ">
+                  <div className="h-[200px] flex items-center justify-center mt-40 ">
                     <h1 className="text-5xl font-semibold tracking-tight text-[#FBE26F] text-center">
                       {getCompletionMessage()}
                     </h1>
@@ -673,7 +673,7 @@ const Exam = () => {
                           : "bg-gray-100 border-gray-300"
                     }`}
                   >
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 text-xs">
                       {isRightAnswer ? (
                         <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center border-2 border-green-700">
                           <svg
@@ -705,13 +705,13 @@ const Exam = () => {
                           </svg>
                         </div>
                       ) : (
-                        <div className="w-6 h-6 bg-gray-300 rounded-full flex items-center justify-center border-2 border-gray-500">
+                        <div className="w-6 h-4 bg-gray-300 rounded-full flex items-center justify-center border-2 border-gray-500">
                           <span className="text-xs font-bold text-gray-600">
                             {optIndex + 1}
                           </span>
                         </div>
                       )}
-                      <p className={`text-sm ${
+                      <p className={`text-[9px] ${
                         isRightAnswer 
                           ? "text-green-800 font-medium"
                           : isUserAnswer && !isRightAnswer
